@@ -1,1 +1,1 @@
-from setting import *
+

@@ -20,7 +20,7 @@ class Test(models.Model):
 
 class Question(models.Model):
     test = models.ForeignKey(verbose_name='Тест', to=Test)
-    type = models.CharField(verbose_name='Тип теста', choices=QUESTION_CLASSES) # Возможна проблема с тем, что в кортеже не пары а тройки
+    type = models.CharField(verbose_name='Тип теста', choices=QUESTION_CLASSES, max_length=250) # Возможна проблема с тем, что в кортеже не пары а тройки
     text = models.TextField(verbose_name='Текст вопроса')
     answers = models.TextField(verbose_name='JSON с ответами') # Кодирование ответов зависит от типа вопроса
 
