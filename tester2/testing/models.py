@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
-from questions.settings import QUESTION_CLASSES
+from questions.settings import QuestionTypesManager
 
 
 class Test(models.Model):
@@ -20,7 +21,7 @@ class Test(models.Model):
 
 class Question(models.Model):
     test = models.ForeignKey(verbose_name='Тест', to=Test)
-    type = models.CharField(verbose_name='Тип теста', choices=QUESTION_CLASSES, max_length=250) # Возможна проблема с тем, что в кортеже не пары а тройки
+    type = models.CharField(verbose_name='Тип теста', choices=QuestionTypesManager.get_question_types_choices(), max_length=250)
     text = models.TextField(verbose_name='Текст вопроса')
     answers = models.TextField(verbose_name='JSON с ответами') # Кодирование ответов зависит от типа вопроса
 
@@ -30,6 +31,7 @@ class Question(models.Model):
 
 
 class Session(models.Model):
+    user = models.ForeignKey(verbose_name='Пользователь', to=User)
     test = models.ForeignKey(verbose_name='Тест', to=Test)
     start_time = models.DateTimeField(verbose_name='Время начала')
 
