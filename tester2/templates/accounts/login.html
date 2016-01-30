@@ -1,0 +1,56 @@
+{% extends 'shared/layout.html' %}
+
+{% block title %}Вход{% endblock title %}
+
+{% block content %}
+    <form class="form-horizontal" action="{% url 'accounts:login' %}" method="post" role="form">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <div class="form-group">
+                    <div class="col-sm-5 col-sm-offset-2">
+                        <span class="help-block">{{ error }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}" class="col-sm-2 control-label">Логин</label>
+            <div class="col-sm-5">
+                <input type="text"
+                       class="form-control"
+                       id="{{ form.username.id_for_label }}"
+                       placeholder="Login"
+                       value="{{ form.username.value|default_if_none:'' }}"
+                       name="{{ form.username.html_name }}">
+                {% for error in form.username.errors %}
+                    <span class="help-block">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}" class="col-sm-2 control-label">Пароль</label>
+            <div class="col-sm-5">
+                <input type="password"
+                       class="form-control"
+                       id="{{ form.password.id_for_label }}"
+                       placeholder="Password"
+                       value="{{ form.password.value|default_if_none:'' }}"
+                       name="{{ form.password.html_name }}">
+                {% for error in form.password.errors %}
+                    <span class="help-block">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+                <button type="submit" class="btn btn-default">Войти</button>
+            </div>
+        </div>
+
+    </form>
+{% endblock content %}

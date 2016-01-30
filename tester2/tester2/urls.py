@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 import testing.urls as testing_urls
+import accounts.urls as accounts_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(testing_urls, namespace='testing'))
+    url(r'^accounts/', include(accounts_urls, namespace='accounts')),
+    url(r'^', include(testing_urls, namespace='testing')),
 ]
