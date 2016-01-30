@@ -7,7 +7,7 @@ class Test(models.Model):
     title = models.CharField(verbose_name='Название', max_length=100)
     description = models.TextField(verbose_name='Описание', blank=True)
     time_limit = models.BooleanField(verbose_name='Ограничение по времени', default=False)
-    duration = models.PositiveIntegerField(verbose_name='Продолжительность')
+    duration = models.PositiveIntegerField(verbose_name='Продолжительность(мин.)')
     active = models.BooleanField(verbose_name='Тест активен')
 
     def __str__(self):
@@ -25,6 +25,9 @@ class Question(models.Model):
     text = models.TextField(verbose_name='Текст вопроса')
     answers = models.TextField(verbose_name='JSON с ответами') # Кодирование ответов зависит от типа вопроса
 
+    def __str__(self):
+        return self.text[0:250]
+
     class Meta:
         verbose_name = 'вопрос теста'
         verbose_name_plural = 'вопросы теста'
@@ -38,6 +41,11 @@ class Session(models.Model):
     class Meta:
         verbose_name = 'сеанс тестирования'
         verbose_name_plural = 'сеанс тестирования'
+
+    def __init__(self, user, test, start_time):
+        self.user = user
+        self.test = test
+        self.start_time = start_time
 
 
 class Answer(models.Model):
