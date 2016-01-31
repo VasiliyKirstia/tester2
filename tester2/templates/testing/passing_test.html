@@ -1,7 +1,50 @@
 {% extends 'shared/layout.html' %}
+{% load templatefilters %}
 
 {% block title %}{% endblock title %}
 
 {% block content %}
-    {# todo доделать отрисовку форм с вопросами #}
+    {% for question in questions %}
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-7">
+                    <p class="form-control-static">
+                        {{ question.text }}
+                    </p>
+                </div>
+            </div>
+        {% for field in question.answer_form %}
+            <div class="form-group">
+            {% with field.field.widget|get_type as field_type %}
+                {% if field_type == "CheckboxInput" %}
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="{{ field.value }}" name="{{ field.html_name }}">
+                            {{ field.label }}
+                        </label>
+                    </div>
+                {% elif field_type == "TextInput" %}
+                    <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
+                    <div class="col-sm-5">
+                        <input type="text"
+                               class="form-control"
+                               id="{{ field.id_for_label }}"
+                               placeholder="Login"
+                               value="{{ field.value|default_if_none:'' }}"
+                               name="{{ field.html_name }}">
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>Для поля типа {{ field_type }} не определено действие.</p>
+                {% endif %}
+            {% endwith %}
+            </div>
+        {% endfor %}
+            <div class="form-group">
+                <button type="submit">Ответить</button>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock content %}

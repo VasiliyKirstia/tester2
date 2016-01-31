@@ -32,6 +32,10 @@ class Question(models.Model):
         verbose_name = 'вопрос теста'
         verbose_name_plural = 'вопросы теста'
 
+    def bind_answer_form(self):
+        self.answer_form = QuestionTypesManager.get_form_class_by_question_type(self.type)(self.answers)
+        return self
+
 
 class Session(models.Model):
     user = models.ForeignKey(verbose_name='Пользователь', to=User)
@@ -42,7 +46,8 @@ class Session(models.Model):
         verbose_name = 'сеанс тестирования'
         verbose_name_plural = 'сеанс тестирования'
 
-    def __init__(self, user, test, start_time):
+    def __init__(self, user, test, start_time, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.user = user
         self.test = test
         self.start_time = start_time

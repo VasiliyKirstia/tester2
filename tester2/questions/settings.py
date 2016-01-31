@@ -1,4 +1,4 @@
-from .types.simple_choice import SimpleChoiceForm
+from .answers_forms.simple_choice import SimpleChoiceForm
 
 
 class UnknownTypeException(Exception):

@@ -1,18 +1,19 @@
 import json
 from django import forms
 
-
-# answers:
-# [
-#   {'text': 'Первый ответ', 'correct':False},
-#   {'text': 'Второй ответ', 'correct':True},
-# ]
+# {
+#   "answers":
+#   [
+#       {"text": "Первый ответ", "correct":false},
+#       {"text": "Второй ответ", "correct":true},
+#   ]
+# }
 # Все пункты должны быть правильными
 
 class SimpleChoiceForm(forms.Form):
     def __init__(self, answers, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.answers = json.loads(answers)
+        self.answers = json.loads(answers)['answers']
 
         for k, answer in enumerate(self.answers):
             self.fields['answer_' + str(k)] = forms.BooleanField(required=False, label=answer['text'])

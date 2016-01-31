@@ -1,5 +1,11 @@
 {% extends 'shared/layout.html' %}
 
 {% block content %}
-    <h1>Привет Мир</h1>
+    <table class="table table-hover">
+    {% for test in tests_list %}
+        <tr>
+            <td><a href="{% url 'testing:passing_test' test.pk %}">{{ test.title }}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
 {% endblock content %}
