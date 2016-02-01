@@ -1,11 +1,14 @@
 {% extends 'shared/layout.html' %}
 {% load templatefilters %}
+{% load staticfiles %}
 
-{% block title %}{% endblock title %}
+{% block title %}Тестирование | Тест № {{ question.test.pk }}{% endblock title %}
 
 {% block content %}
     {% for question in questions %}
-        <div class="form-horizontal">
+        <form class="form-horizontal" action="{% url 'testing:answer_processing' %}">
+            {% csrf_token %}
+            <input type="hidden" name="session" value="{{ session_pk }}">
             <div class="form-group">
                 <div class="col-sm-7">
                     <p class="form-control-static">
@@ -29,7 +32,6 @@
                         <input type="text"
                                class="form-control"
                                id="{{ field.id_for_label }}"
-                               placeholder="Login"
                                value="{{ field.value|default_if_none:'' }}"
                                name="{{ field.html_name }}">
                         {% for error in field.errors %}
@@ -43,8 +45,31 @@
             </div>
         {% endfor %}
             <div class="form-group">
-                <button type="submit">Ответить</button>
+                <input type="submit" value="Ответить" >
             </div>
-        </div>
+        </form>
     {% endfor %}
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'scripts/csrf.js' %}"></script>
+<script type="text/javascript">
+    $(window).load(function(){
+        $('form.form-horizontal').each(function(index, item){
+            $(item).submit(function(eventObject){
+                var $form = $(eventObject.target);
+                $.ajax({
+                        url: $form.attr('action'),
+                        type: 'post',
+                        data: $form.serialize(),
+                        success: function(data){
+                            alert(data['text']);
+                        }
+                    }
+                );
+                return false;
+            });
+        });
+    });
+</script>
+{% endblock scripts %}

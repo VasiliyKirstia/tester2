@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}</title>
 
+    <!-- jQuery -->
+    <script type="text/javascript" src="{% static 'scripts/jquery-2.2.0.min.js' %}"></script>
+
     <!-- Bootstrap 3 -->
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}" rel="stylesheet">
     <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-
-    <!-- jQuery -->
-    <script type="text/javascript" src="{% static 'scripts/jquery.min.js' %}"></script>
 </head>
 <body>
 <div class="container">
@@ -22,5 +22,6 @@
         </div>
     </div>
 </div>
+{% block scripts %}{% endblock scripts %}
 </body>
 </html>

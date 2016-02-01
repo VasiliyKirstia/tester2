@@ -42,6 +42,6 @@ class AnswerProcessingView(View):
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
             #todo доработать обработку ответов
-            return JsonResponse({})
+            return JsonResponse({'text':'привет из AnswerProcessingView'})
         else:
             raise Http404()
