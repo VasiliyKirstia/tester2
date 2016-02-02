@@ -1,10 +1,12 @@
+import datetime
+
 from django.http.response import JsonResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import TemplateView
 from django.views.generic import View
-from django.views.generic.list import ListView
-from testing.models import Question, Session, User, Test
-import datetime
+
+from questions.settings import QuestionTypesManager
+from testing.models import Question, Session, Test, Answer
 
 
 class HomeView(TemplateView):
@@ -22,12 +24,11 @@ class PassingTestView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PassingTestView, self).get_context_data(**kwargs)
 
-        session = Session(
-            self.request.user,
-            get_object_or_404(Test, pk=self.kwargs['test_pk']),
-            datetime.datetime.now()
+        session = Session.objects.create(
+            user=self.request.user,
+            test=get_object_or_404(Test, pk=self.kwargs['test_pk']),
+            start_time=datetime.datetime.now()
         )
-        session.save()
 
         context['questions'] = [
             question.bind_answer_form() for question in Question.objects.filter(test=self.kwargs['test_pk'])
@@ -41,7 +42,17 @@ class PassingTestView(TemplateView):
 class AnswerProcessingView(View):
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
-            #todo доработать обработку ответов
-            return JsonResponse({'text':'привет из AnswerProcessingView'})
+            #todo нужно добавить какую-нибудь логику учитывающую истечение времени
+            form_class = QuestionTypesManager.get_form_class_by_question_type(request.POST['question_type'])
+            form = form_class(Question.objects.get(pk=request.POST['question_pk']).answers, request.POST)
+            if form.is_valid():
+                Answer.objects.create(
+                    session=get_object_or_404(Session, pk=request.POST['session_pk']),
+                    question=get_object_or_404(Question, pk=request.POST['question_pk']),
+                    correct=form.check_answers()
+                )
+                return JsonResponse({'text':'ваш ответ {0}'.format('верный.' if form.check_answers() else 'не верный.')})
+            else:
+                return JsonResponse({'text':'форма не валидна'})
         else:
             raise Http404()

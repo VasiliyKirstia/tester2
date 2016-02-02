@@ -8,7 +8,9 @@
     {% for question in questions %}
         <form class="form-horizontal" action="{% url 'testing:answer_processing' %}">
             {% csrf_token %}
-            <input type="hidden" name="session" value="{{ session_pk }}">
+            <input type="hidden" name="session_pk" value="{{ session_pk }}">
+            <input type="hidden" name="question_type" value="{{ question.type }}">
+            <input type="hidden" name="question_pk" value="{{ question.pk }}">
             <div class="form-group">
                 <div class="col-sm-7">
                     <p class="form-control-static">
@@ -63,7 +65,11 @@
                         type: 'post',
                         data: $form.serialize(),
                         success: function(data){
-                            alert(data['text']);
+                            $form.find(':submit').remove();
+                            $form.find('input').each(function(i,el){
+                                $(el).attr('disabled','disabled');
+                            });
+                            $form.append('<p>'+ data['text'] +'<p>');
                         }
                     }
                 );

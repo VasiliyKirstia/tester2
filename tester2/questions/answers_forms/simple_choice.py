@@ -10,6 +10,7 @@ from django import forms
 # }
 # Все пункты должны быть правильными
 
+
 class SimpleChoiceForm(forms.Form):
     def __init__(self, answers, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,7 +20,7 @@ class SimpleChoiceForm(forms.Form):
             self.fields['answer_' + str(k)] = forms.BooleanField(required=False, label=answer['text'])
 
     # Этот метод вызывается из View, когда форма валидна для учёта ответов пользователя
-    def check_answers(self, answers):
+    def check_answers(self):
         data = self.cleaned_data
         for k, answer in enumerate(self.answers):
             try:

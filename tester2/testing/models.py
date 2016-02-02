@@ -26,7 +26,7 @@ class Question(models.Model):
     answers = models.TextField(verbose_name='JSON с ответами') # Кодирование ответов зависит от типа вопроса
 
     def __str__(self):
-        return self.text[0:250]
+        return self.text[:150]
 
     class Meta:
         verbose_name = 'вопрос теста'
@@ -46,17 +46,14 @@ class Session(models.Model):
         verbose_name = 'сеанс тестирования'
         verbose_name_plural = 'сеанс тестирования'
 
-    def __init__(self, user, test, start_time, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user = user
-        self.test = test
-        self.start_time = start_time
-
 
 class Answer(models.Model):
     session = models.ForeignKey(verbose_name='Сеанс', to=Session)
     question = models.ForeignKey(verbose_name='Тест', to=Question)
     correct = models.BooleanField(verbose_name='Ответ верный')
+
+    def __str__(self):
+        return "{user_name}: {question}".format(question=self.question.text[:150], user_name=self.session.user.username)
 
     class Meta:
         verbose_name = 'ответ'
