@@ -1,4 +1,5 @@
 from .answers_forms.simple_choice import SimpleChoiceForm
+from .answers_forms.numeric import NumericForm
 
 
 class UnknownTypeException(Exception):
@@ -24,7 +25,11 @@ class QuestionTypesManager:
 
     __question_types = {
         'SIMPLE_CHOICE': {
-            'verbose_name': 'Простой выбор',
+            'verbose_name': 'простой выбор',
             'form_class': SimpleChoiceForm
         },
+        'NUMERIC' : {
+            'verbose_name': 'числовой',
+            'form_class': NumericForm
+        }
     }

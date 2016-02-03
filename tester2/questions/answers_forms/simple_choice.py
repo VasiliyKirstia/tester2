@@ -6,6 +6,7 @@ from django import forms
 #   [
 #       {"text": "Первый ответ", "correct":false},
 #       {"text": "Второй ответ", "correct":true},
+#       ...
 #   ]
 # }
 # Все пункты должны быть правильными
