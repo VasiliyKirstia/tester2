@@ -1,9 +1,9 @@
 {% extends 'shared/layout.html' %}
 
-{% block title %}Вход{% endblock title %}
+{% block title %}Регистрация{% endblock title %}
 
 {% block content %}
-    <form class="form-horizontal" action="{% url 'accounts:login' %}" method="post" role="form">
+    <form class="form-horizontal" action="{% url 'accounts:registration' %}" method="post" role="form">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
@@ -32,15 +32,30 @@
         </div>
 
         <div class="form-group">
-            <label for="{{ form.password.id_for_label }}" class="col-sm-2 control-label">{{ form.password.label }}</label>
+            <label for="{{ form.password1.id_for_label }}" class="col-sm-2 control-label">{{ form.password1.label }}</label>
             <div class="col-sm-5">
                 <input type="password"
                        class="form-control"
-                       id="{{ form.password.id_for_label }}"
-                       placeholder="{{ form.password.label|lower }}"
-                       value="{{ form.password.value|default_if_none:'' }}"
-                       name="{{ form.password.html_name }}">
-                {% for error in form.password.errors %}
+                       id="{{ form.password1.id_for_label }}"
+                       placeholder="{{ form.password1.label|lower }}"
+                       value="{{ form.password1.value|default_if_none:'' }}"
+                       name="{{ form.password1.html_name }}">
+                {% for error in form.password1.errors %}
+                    <span class="help-block">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}" class="col-sm-2 control-label">{{ form.password2.label }}</label>
+            <div class="col-sm-5">
+                <input type="password"
+                       class="form-control"
+                       id="{{ form.password2.id_for_label }}"
+                       placeholder="{{ form.password2.label|lower }}"
+                       value="{{ form.password2.value|default_if_none:'' }}"
+                       name="{{ form.password2.html_name }}">
+                {% for error in form.password2.errors %}
                     <span class="help-block">{{ error }}</span>
                 {% endfor %}
             </div>
@@ -48,7 +63,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-5">
-                <button type="submit" class="btn btn-default">Войти</button>
+                <button type="submit" class="btn btn-default">Зарегистрироваться</button>
             </div>
         </div>
 

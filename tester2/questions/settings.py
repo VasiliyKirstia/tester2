@@ -32,4 +32,5 @@ class QuestionTypesManager:
             'verbose_name': 'числовой',
             'form_class': NumericForm
         }
+        #todo добавить еще типов вопросов
     }
