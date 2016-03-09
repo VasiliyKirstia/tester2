@@ -51,6 +51,7 @@ class Answer(models.Model):
     session = models.ForeignKey(verbose_name='Сеанс', to=Session)
     question = models.ForeignKey(verbose_name='Тест', to=Question)
     correct = models.BooleanField(verbose_name='Ответ верный')
+    creation_time = models.DateTimeField(verbose_name='Время создания', auto_now_add=True)
 
     def __str__(self):
         return "{user_name}: {question}".format(question=self.question.text[:150], user_name=self.session.user.username)

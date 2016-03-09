@@ -31,4 +31,6 @@ class SimpleChoiceForm(forms.Form):
                 return False
         return True
 
-# На каждый тип вопроса нужно ещё сделать заменяемые формы для создания ответов, возможно нужно перегруппировать пакеты
+
+class SimpleChoiceCreateForm(forms.Form):
+    pass

@@ -3,6 +3,7 @@ import datetime
 from django.http.response import JsonResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 
 from questions.settings import QuestionTypesManager
@@ -18,7 +19,7 @@ class HomeView(TemplateView):
         return context
 
 
-class PassingTestView(TemplateView):
+class PassingTestView(LoginRequiredMixin, TemplateView):
     template_name = 'testing/passing_test.html'
 
     def get_context_data(self, **kwargs):
@@ -35,11 +36,11 @@ class PassingTestView(TemplateView):
         ]
 
         context['session_pk'] = session.pk
+        context['test_pk'] = self.kwargs['test_pk']
         return context
 
 
-
-class AnswerProcessingView(View):
+class AnswerProcessingView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
             #todo нужно добавить какую-нибудь логику учитывающую истечение времени
@@ -49,7 +50,7 @@ class AnswerProcessingView(View):
                 Answer.objects.create(
                     session=get_object_or_404(Session, pk=request.POST['session_pk']),
                     question=get_object_or_404(Question, pk=request.POST['question_pk']),
-                    correct=form.check_answers()
+                    correct=form.check_answers(),
                 )
                 return JsonResponse({'text':'ваш ответ {0}'.format('верный.' if form.check_answers() else 'не верный.')})
             else:

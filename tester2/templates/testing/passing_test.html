@@ -1,9 +1,9 @@
 {% extends 'shared/layout.html' %}
 {% load templatefilters %}
 {% load staticfiles %}
+{% load cache %}
 
-      {# todo нужно разобраться почему тут не выводится question.test.pk #}
-{% block title %}Тестирование | Тест № {{ question.test.pk }}{% endblock title %}
+{% block title %}Тестирование | Тест № {{ test_pk }}{% endblock title %}
 
 {% block content %}
     {% for question in questions %}

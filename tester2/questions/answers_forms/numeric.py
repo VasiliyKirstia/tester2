@@ -29,3 +29,6 @@ class NumericForm(forms.Form):
         except ValueError:
             return False
         return True
+
+class NumericCreateForm(object):
+    pass
