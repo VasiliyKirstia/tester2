@@ -8,10 +8,11 @@ from django import forms
 # Все пункты должны быть правильными
 
 
+
 class NumericForm(forms.Form):
-    def __init__(self, answers, *args, **kwargs):
+    def __init__(self, json_data, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        data = json.loads(answers)
+        data = json.loads(json_data)
         self.answer = float(data['answer'])
         self.precision = float(data['precision'])
 
@@ -29,6 +30,3 @@ class NumericForm(forms.Form):
         except ValueError:
             return False
         return True
-
-class NumericCreateForm(object):
-    pass

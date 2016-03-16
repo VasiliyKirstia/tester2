@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 
-from questions.settings import QuestionTypesManager
+from question_types.types_manager import QuestionTypesManager
 from testing.models import Question, Session, Test, Answer
 
 
@@ -31,7 +31,7 @@ class PassingTestView(LoginRequiredMixin, TemplateView):
             start_time=datetime.datetime.now()
         )
 
-        context['questions'] = [
+        context['question_types'] = [
             question.bind_answer_form() for question in Question.objects.filter(test=self.kwargs['test_pk'])
         ]
 

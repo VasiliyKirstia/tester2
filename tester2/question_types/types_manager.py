@@ -1,12 +1,10 @@
-from .answers_forms.simple_choice import SimpleChoiceForm
-from .answers_forms.numeric import NumericForm
-
-
 class UnknownTypeException(Exception):
     pass
 
+#todo переделать класс под паттерн одиночка и сделать импортирование новых типов вопросов динамическим.
 
 class QuestionTypesManager:
+    """Подгружает доступные типы вопросов и предоставляет набор методов для работы с ними. Выпонен в виде синглтона."""
 
     @classmethod
     def is_question_type_exist(cls, question_type):

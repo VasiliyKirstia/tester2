@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from questions.settings import QuestionTypesManager
+from question_types.types_manager import QuestionTypesManager
 
 
 class Test(models.Model):

@@ -13,9 +13,9 @@ from django import forms
 
 
 class SimpleChoiceForm(forms.Form):
-    def __init__(self, answers, *args, **kwargs):
+    def __init__(self, json_data, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.answers = json.loads(answers)['answers']
+        self.answers = json.loads(json_data)['answers']
 
         for k, answer in enumerate(self.answers):
             self.fields['answer_' + str(k)] = forms.BooleanField(required=False, label=answer['text'])
@@ -30,7 +30,3 @@ class SimpleChoiceForm(forms.Form):
             except KeyError:
                 return False
         return True
-
-
-class SimpleChoiceCreateForm(forms.Form):
-    pass
