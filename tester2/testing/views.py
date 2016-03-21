@@ -44,7 +44,7 @@ class AnswerProcessingView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
             #todo нужно добавить какую-нибудь логику учитывающую истечение времени
-            form_class = QuestionTypesManager.get_form_class_by_question_type(request.POST['question_type'])
+            form_class = QuestionTypesManager.get_answer_form_class(request.POST['question_type'])
             form = form_class(Question.objects.get(pk=request.POST['question_pk']).answers, request.POST)
             if form.is_valid():
                 Answer.objects.create(

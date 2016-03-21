@@ -1,5 +1,5 @@
 from django.forms import forms
 
 
-class SimpleChoiceEditingForm(forms.Form):
+class SimpleChoiceModelForm(forms.ModelForm):
     pass

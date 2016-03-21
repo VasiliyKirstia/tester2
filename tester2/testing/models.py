@@ -33,7 +33,7 @@ class Question(models.Model):
         verbose_name_plural = 'вопросы теста'
 
     def bind_answer_form(self):
-        self.answer_form = QuestionTypesManager.get_form_class_by_question_type(self.type)(self.answers)
+        self.answer_form = QuestionTypesManager.get_answer_form_class(self.type)(self.answers)
         return self
 
 

@@ -1,34 +1,30 @@
+from .settings import QUESTION_TYPES
+
+
 class UnknownTypeException(Exception):
     pass
 
-#todo переделать класс под паттерн одиночка и сделать импортирование новых типов вопросов динамическим.
 
 class QuestionTypesManager:
-    """Подгружает доступные типы вопросов и предоставляет набор методов для работы с ними. Выпонен в виде синглтона."""
 
     @classmethod
     def is_question_type_exist(cls, question_type):
-        return question_type in cls.__question_types.keys()
+        return question_type in QUESTION_TYPES.keys()
 
     @classmethod
-    def get_form_class_by_question_type(cls, question_type):
+    def get_model_form_class(cls, question_type):
         if cls.is_question_type_exist(question_type):
-            return cls.__question_types[question_type]['form_class']
+            return QUESTION_TYPES[question_type]['model_form']
+        else:
+            raise UnknownTypeException()
+
+    @classmethod
+    def get_answer_form_class(cls, question_type):
+        if cls.is_question_type_exist(question_type):
+            return QUESTION_TYPES[question_type]['answer_form']
         else:
             raise UnknownTypeException()
 
     @classmethod
     def get_question_types_choices(cls):
-        return tuple([(question_type, cls.__question_types[question_type]['verbose_name']) for question_type in cls.__question_types.keys()])
-
-    __question_types = {
-        'SIMPLE_CHOICE': {
-            'verbose_name': 'простой выбор',
-            'form_class': SimpleChoiceForm
-        },
-        'NUMERIC' : {
-            'verbose_name': 'числовой',
-            'form_class': NumericForm
-        }
-        #todo добавить еще типов вопросов
-    }
+        return tuple([(question_type, QUESTION_TYPES[question_type]['verbose_name']) for question_type in QUESTION_TYPES.keys()])
