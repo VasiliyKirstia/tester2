@@ -12,6 +12,7 @@ class NumericModelForm(forms.ModelForm):
 
     def clean(self):
         super(NumericModelForm, self).clean()
+        self.instance.type = 'NUMERIC'
         self.instance.answers = '{"answer":{answer},"precision":{precision}}'.format(
             answer=self.cleaned_data['answer'],
             precision=self.cleaned_data['precision']
