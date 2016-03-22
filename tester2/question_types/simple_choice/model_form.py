@@ -1,5 +1,11 @@
-from django.forms import forms
+from django import forms
+from testing.models import Question
 
 
 class SimpleChoiceModelForm(forms.ModelForm):
-    pass
+    class Meta:
+        model=Question
+        fields = ['test', 'text']
+
+
+FORM_CLASS = SimpleChoiceModelForm

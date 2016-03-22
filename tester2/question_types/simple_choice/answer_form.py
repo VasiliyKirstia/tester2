@@ -30,3 +30,5 @@ class SimpleChoiceForm(forms.Form):
             except KeyError:
                 return False
         return True
+
+FORM_CLASS = SimpleChoiceForm

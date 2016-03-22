@@ -16,3 +16,5 @@ class NumericModelForm(forms.ModelForm):
             answer=self.cleaned_data['answer'],
             precision=self.cleaned_data['precision']
         )
+
+FORM_CLASS = NumericModelForm

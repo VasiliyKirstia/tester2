@@ -6,7 +6,7 @@ from django import forms
 #   "precision":"0.5",
 # }
 # Все пункты должны быть правильными
-
+from matplotlib.cbook import Null
 
 
 class NumericForm(forms.Form):
@@ -30,3 +30,5 @@ class NumericForm(forms.Form):
         except ValueError:
             return False
         return True
+
+FORM_CLASS = NumericForm
