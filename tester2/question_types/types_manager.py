@@ -48,3 +48,7 @@ class QuestionTypesManager:
     @classmethod
     def get_question_types_choices(cls):
         return tuple([(question_type, QUESTION_TYPES[question_type]['verbose_name']) for question_type in QUESTION_TYPES.keys()])
+
+    @classmethod
+    def get_question_types_list(cls):
+        return QUESTION_TYPES.keys()

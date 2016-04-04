@@ -1,6 +1,7 @@
 import datetime
 
-from django.http.response import JsonResponse, Http404
+from django.http.response import JsonResponse, Http404, HttpResponse
+from django.shortcuts import render_to_response, render
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -57,3 +58,38 @@ class AnswerProcessingView(LoginRequiredMixin, View):
                 return JsonResponse({'text':'форма не валидна'})
         else:
             raise Http404()
+
+
+class QuestionCreateView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('question_type', None) is None:
+            return render_to_response(
+                'testing/question_type_select.html',
+                {'types_list': QuestionTypesManager.get_question_types_list()}
+            )
+        elif QuestionTypesManager.is_question_type_exist(request.GET.get('question_type')):
+            return render_to_response(
+                'testing/question_create.html',
+                {
+                    'form': QuestionTypesManager.get_answer_form_class(request.GET.get('question_type')),
+                    'question_type': request.GET.get('question_type')
+                }
+            )
+        else:
+            raise Http404()
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('question_type', None) is None:
+            raise Http404()
+
+        form = QuestionTypesManager.get_model_form_class(request.POST.get('question_type'))(request)
+        if form.is_valid():
+            return HttpResponse("Вопрос добавлен успешно.")
+        else:
+            return render_to_response(
+                'testing/question_create.html',
+                {
+                    'form': form,
+                    'question_type': request.GET.get('question_type')
+                }
+            )

@@ -1,42 +1,39 @@
 from django import forms
 from testing.models import Question
+import json
 
 
 class SimpleChoiceModelForm(forms.ModelForm):
-    class Meta:
-        model=Question
-        fields = [
-            'test', 'text',
-            'variant_1', 'is_correct_1',
-            'variant_2', 'is_correct_2',
-            'variant_3', 'is_correct_3',
-            'variant_4', 'is_correct_4',
-            'variant_5', 'is_correct_5',
-            'variant_6', 'is_correct_6'
-        ]
+    VARIANTS_COUNT = 10
 
-    variant_1 = forms.CharField()
-    is_correct_1 = forms.BooleanField(required=False)
-
-    variant_2 = forms.TextInput()
-    is_correct_2 = forms.BooleanField(required=False)
-
-    variant_3 = forms.TextInput()
-    is_correct_3 = forms.BooleanField(required=False)
-
-    variant_4 = forms.TextInput()
-    is_correct_4 = forms.BooleanField(required=False)
-
-    variant_5 = forms.TextInput()
-    is_correct_5 = forms.BooleanField(required=False)
-
-    variant_6 = forms.TextInput()
-    is_correct_6 = forms.BooleanField(required=False)
+    def __init__(self):
+        for i in range(0, self.VARIANTS_COUNT):
+            self.fields['variant_' + str(i)] = forms.CharField()
+            self.fields['is_correct_' + str(i)] = forms.BooleanField(required=False, label='вариант {0} верный'.format(i))
 
     def clean(self):
-        super(SimpleChoiceModelForm,self).clean()
+        super(SimpleChoiceModelForm, self).clean()
+
+        data = {'answers': []}
+        for i in range(0,self.VARIANTS_COUNT):
+            if self.cleaned_data['variant_' + str(i)] is not None:
+                striped_string = str.strip(self.cleaned_data['variant_' + str(i)])
+                if striped_string != "":
+                    data['answers'].append({
+                        "text": striped_string,
+                        "correct": self.cleaned_data['is_correct_' + str(i)]
+                    })
+
         self.instance.type = 'SIMPLE_CHOICE'
-        #todo добавить обработку остальных полей и сохранение в базу
+        self.instance.test = self.cleaned_data['test']
+        self.instance.text = self.cleaned_data['text']
+        self.instance.answers = json.dumps(data)
+
+    class Meta:
+        model=Question
+        fields = ['test', 'text'] +\
+                 ['variant_' + str(i) for i in range(0,SimpleChoiceModelForm.VARIANTS_COUNT)] +\
+                 ['is_correct_' + str(i) for i in range(0, SimpleChoiceModelForm.VARIANTS_COUNT)]
 
 
 FORM_CLASS = SimpleChoiceModelForm
