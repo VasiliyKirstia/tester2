@@ -1,3 +1,4 @@
+import json
 from django import forms
 from testing.models import Question
 
@@ -13,9 +14,11 @@ class NumericModelForm(forms.ModelForm):
     def clean(self):
         super(NumericModelForm, self).clean()
         self.instance.type = 'NUMERIC'
-        self.instance.answers = '{"answer":{answer},"precision":{precision}}'.format(
-            answer=self.cleaned_data['answer'],
-            precision=self.cleaned_data['precision']
-        )
+        data = {
+            'answer': self.cleaned_data['answer'],
+            'precision': self.cleaned_data['precision']
+        }
+        self.instance.answers = json.dumps(data)
+
 
 FORM_CLASS = NumericModelForm

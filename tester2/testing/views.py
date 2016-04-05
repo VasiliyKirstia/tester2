@@ -1,5 +1,5 @@
 import datetime
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from django.http.response import JsonResponse, Http404, HttpResponse
 from django.shortcuts import render_to_response, render
@@ -62,7 +62,7 @@ class AnswerProcessingView(LoginRequiredMixin, View):
             raise Http404()
 
 
-#@method_decorator(csrf_protect, name='dispatch')
+@method_decorator(csrf_exempt, name='dispatch')
 class QuestionCreateView(View):
     def get(self, request, *args, **kwargs):
         if self.kwargs.get('question_type', None) is None:
@@ -71,8 +71,7 @@ class QuestionCreateView(View):
                 {'types_list': QuestionTypesManager.get_question_types_list()}
             )
         elif QuestionTypesManager.is_question_type_exist(self.kwargs.get('question_type')):
-            form = QuestionTypesManager.get_model_form_class(self.kwargs.get('question_type'))(request)
-            print(form)
+            form = QuestionTypesManager.get_model_form_class(self.kwargs.get('question_type'))()
             return render_to_response(
                 'testing/question_create.html',
                 {
@@ -87,8 +86,9 @@ class QuestionCreateView(View):
         if self.kwargs.get('question_type', None) is None:
             raise Http404()
 
-        form = QuestionTypesManager.get_model_form_class(self.kwargs.get('question_type'))(request)
+        form = QuestionTypesManager.get_model_form_class(self.kwargs.get('question_type'))(request.POST)
         if form.is_valid():
+            form.save()
             return HttpResponse("Вопрос добавлен успешно.")
         else:
             return render_to_response(
