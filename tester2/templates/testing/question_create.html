@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'shared/layout.html' %}
+{% load templatefilters %}
+{% load staticfiles %}
+{% load cache %}
 
-</body>
-</html>
+{% block title %}Тестирование | Добавление вопроса{% endblock title %}
+
+{% block content %}
+    <form class="form-horizontal" action="{% url 'testing:question_create' question_type %}">
+        {# {% csrf_token %}  #}
+        {{ form }}
+        <div class="form-group">
+            <input type="submit" value="Добавить" >
+        </div>
+    </form>
+{% endblock content %}

@@ -6,7 +6,7 @@
     <table class="table table-hover">
         {% for type in types_list %}
             <tr>
-                <td><a href="{% url 'testing:passing_test' test.pk %}">{{ test.title }}</a></td>
+                <td><a href="{% url 'testing:question_create' type %}">{{ type }}</a></td>
             </tr>
         {% endfor %}
     </table>
