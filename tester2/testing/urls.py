@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from testing.views import HomeView, PassingTestView, AnswerProcessingView, QuestionCreateView
+from testing.views import HomeView, PassingTestView, AnswerProcessingView, QuestionCreateView, TestCreateView
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^answer_processing/$', AnswerProcessingView.as_view(), name='answer_processing'),
     url(r'^question_type_selection/$', QuestionCreateView.as_view(), name='question_type_selection'),
     url(r'^question_create/(?P<question_type>[A-Z,0-9,_]+)/$', QuestionCreateView.as_view(), name='question_create'),
+    url(r'^test_create/$', TestCreateView.as_view(), name='test_create'),
 ]

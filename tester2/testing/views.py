@@ -1,4 +1,5 @@
 import datetime
+from django.core.urlresolvers import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from django.http.response import JsonResponse, Http404, HttpResponse
@@ -7,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View
+from django.views.generic import View, CreateView, UpdateView
 
 from question_types.types_manager import QuestionTypesManager
 from testing.models import Question, Session, Test, Answer
@@ -98,3 +99,10 @@ class QuestionCreateView(View):
                     'question_type': self.kwargs.get('question_type')
                 }
             )
+
+
+class TestCreateView(CreateView):
+    model = Test
+    template_name = 'testing/test_update.html'
+    success_url = reverse_lazy('testing:test_create')
+    fields = '__all__'

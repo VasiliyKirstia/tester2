@@ -1,0 +1,15 @@
+{% extends 'shared/layout.html' %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block title %}Тестирование | Добавление теста{% endblock title %}
+
+{% block content %}
+    <form class="form-horizontal" action="{% url 'testing:test_create' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group">
+            <input type="submit" value="Добавить" >
+        </div>
+    </form>
+{% endblock content %}
