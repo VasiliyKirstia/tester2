@@ -3,7 +3,7 @@
 {% block title %}Вход{% endblock title %}
 
 {% block content %}
-    <form class="form-horizontal" action="{% url 'accounts:login' %}" method="post" role="form">
+    <form class="form-horizontal" method="post" role="form">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
