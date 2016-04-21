@@ -20,7 +20,7 @@ class Test(models.Model):
 
 
 class Question(models.Model):
-    test = models.ForeignKey(verbose_name='Тест', to=Test)
+    test = models.ForeignKey(verbose_name='Тест', to=Test, null=False)
     type = models.CharField(verbose_name='Тип теста', choices=QuestionTypesManager.get_question_types_choices(), max_length=250)
     text = models.TextField(verbose_name='Текст вопроса')
     answers = models.TextField(verbose_name='JSON с ответами') # Кодирование ответов зависит от типа вопроса

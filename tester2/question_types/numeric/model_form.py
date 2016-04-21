@@ -8,16 +8,24 @@ class NumericModelForm(forms.ModelForm):
         model = Question
         fields = ['test', 'text', 'answer', 'precision']
 
-    answer = forms.FloatField(label='правильный ответ')
-    precision = forms.FloatField(label='допустимая погрешность')
+    answer = forms.FloatField(label='правильный ответ', required=True)
+    precision = forms.FloatField(label='допустимая погрешность', required=True)
 
     def clean(self):
         super(NumericModelForm, self).clean()
         self.instance.type = 'NUMERIC'
-        data = {
-            'answer': self.cleaned_data['answer'],
-            'precision': self.cleaned_data['precision']
-        }
+        data = {}
+
+        try:
+            data['answer'] = self.cleaned_data['answer']
+        except KeyError:
+            pass
+
+        try:
+            data['precision'] = self.cleaned_data['precision']
+        except KeyError:
+            pass
+
         self.instance.answers = json.dumps(data)
 
 

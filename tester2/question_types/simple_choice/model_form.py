@@ -27,8 +27,15 @@ class SimpleChoiceModelForm(forms.ModelForm):
                 })
 
         self.instance.type = 'SIMPLE_CHOICE'
-        self.instance.test = self.cleaned_data['test']
-        self.instance.text = self.cleaned_data['text']
+        try:
+            self.instance.test = self.cleaned_data['test']
+        except KeyError:
+            pass
+
+        try:
+            self.instance.text = self.cleaned_data['text']
+        except KeyError:
+            pass
         self.instance.answers = json.dumps(data)
 
     class Meta:

@@ -33,7 +33,7 @@
                     {% elif field_type == "NumberInput" %}
                         <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
                         <div class="col-sm-5">
-                            <input type="number"
+                            <input type="text"
                                    class="form-control"
                                    id="{{ field.id_for_label }}"
                                    value="{{ field.value|default_if_none:'' }}"
@@ -48,8 +48,7 @@
                             <textarea class="form-control" rows="3"
                                       id="{{ field.id_for_label }}"
                                       value="{{ field.value|default_if_none:'' }}"
-                                      name="{{ field.html_name }}">
-                            </textarea>
+                                      name="{{ field.html_name }}">{{ field.value|default_if_none:'' }}</textarea>
                             {% for error in field.errors %}
                                 <span class="help-block">{{ error }}</span>
                             {% endfor %}
@@ -57,6 +56,9 @@
                     {% elif field_type == "Select" %}
                         {{ field }}
                         <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
                         {% comment %}
                         <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
                         <div class="col-sm-5">

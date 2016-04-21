@@ -6,7 +6,7 @@
 {% block title %}Тестирование | Тест № {{ test_pk }}{% endblock title %}
 
 {% block content %}
-    {% for question in questions %}
+    {% for question in question_types %}
         <form class="form-horizontal" action="{% url 'testing:answer_processing' %}">
             {% csrf_token %}
             <input type="hidden" name="session_pk" value="{{ session_pk }}">
