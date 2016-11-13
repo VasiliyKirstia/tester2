@@ -1,3 +1,4 @@
 /tester2/.idea/
 **/__pycache__/
 .idea/
+/tester2/db.sqlite3
